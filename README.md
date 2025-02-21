@@ -1,30 +1,36 @@
-# UNIT-2-PROJECT
+
+# EmdadHomeHr
+- Symbolizing Hr Management system
+
+### Summary of EmdadHomeHr Web App
+- EmdadHomeHr is a Human resources management platform designed to facilitate employees, brands and products.
+- The app offers a services that allow owner and employees interact where employees can navigate, request, and contact their supervisor.
+- Business Owners have full control of employees data, vacation requests, and can view their messages.
+### Features
+* Home Page:
+    * Login / out and register
+    * Featured Brands and Employees
+    * contact us form
+
+* Employee:
+
+    * View for all employees, vacation requests to be approved/declined.
+    * Provides an overview of user information, requests, and messages.
+    * Edit Profile data
+    * `coming soon, add their formal paper transactions and sales`
+
+* Brand:
+    * Provides an overview of Brand data.
+    * Edit Brand data
 
 
-## HmzH a Personal Portfolio Website
 
-
-A personal website is website that represents you , your work , your career , your interests and so on. It could be highly stylish , fun, or simple, serious and so on. You choose how you represent yourself online !
-
-## WireFrame
-<img style="width:100%; height:auto;" alt="Screenshot 2024-03-19 at 3 16 01 PM" src="resources/wireframe.png">
-<img style="width:100%; height:auto;" alt="Screenshot 2024-03-19 at 3 16 01 PM" src="resources/models.png">
-<img style="width:100%; height:auto;" alt="Screenshot 2024-03-19 at 3 16 01 PM" src="resources/userStories.png">
-
-### User Stories, Wireframes & UML links
-[Wireframe](https://excalidraw.com/#json=zROztoeX-ggjcqCuF9Ri8,EtdMW_nS0n4p0TVd9hT1bQ)
-
-
-## HmzH Portfolio
-Personal Portfolio website that shows my favorite interests in the world, Programming Projects and Photography, I will present my coding projects and Photos I took that is think it worth showing everybody.
-
-## Features List
-- Home View
-- Projects View
-- Photography View
-- About me Page
-- Contact Me
-- Products/ Services
-- Requesting Products
-- Administration Dashboard for controlling models data (view, add, edit, and delete)
-
+## Requirement and Tools
+- Python/Django.
+- Use Templates & Template Inheritance.
+- static, media & dynamic urls.
+- Postgresql models.
+- BootStrap CSS library for front-end styles.
+- User Authentication & Authorization.
+- SWE naming conventions & best practices.
+- Strive to make the user journey intuitive and complete.
