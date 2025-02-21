@@ -1,0 +1,10 @@
+{
+  "$schema": "https://rail.app/railway.schema.json",
+  "build": {
+      "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand" : "cd EmdadHomeHr python manage.py migrate && python manage.py collectstatic --noinput && gunicorn EmdadHomeHr.wsgi"
+  }
+
+}

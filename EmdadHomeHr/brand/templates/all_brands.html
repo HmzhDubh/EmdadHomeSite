@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+
+{% block title %} All Brands {% endblock %}
+
+{% block main %}
+<main>
+    <div class="breadcrumb ms-5 mt-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="text-decoration-none" href="{% url 'HrApp:home_view' %}">Home</a></li>
+                <li class="breadcrumb-item active">Brands</li>
+            </ol>
+        </nav>
+    </div>
+    <div>
+        <div class="brandsCards row row-cols-1 row-cols-3 gap-3 justify-content-center">
+            {% for brand in brands %}
+            <div class="col card h-100 p-4" style="width: 15rem;">
+                <img src="{{brand.logo.url}}" class="card-img-top" alt="{brand.name}">
+                <div class="card-body">
+                    <h5 class="card-title">{{brand.name}}</h5>
+                    <p class="card-text">{{brand.about}}</p>
+                    <a href="{% url 'brand:brand_details' brand.id %}" class="btn btn-primary">Brand Details</a>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</main>
+{% endblock %}

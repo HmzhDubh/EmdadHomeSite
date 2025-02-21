@@ -1,0 +1,42 @@
+{% extends 'index.html' %}
+
+{% block title %}All Employees{% endblock %}
+
+{% block main %}
+<main>
+    <div class="breadcrumb ms-5 mt-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="text-decoration-none" href="{% url 'HrApp:home_view' %}">Home</a></li>
+                <li class="breadcrumb-item">brands</li>
+                <li class="breadcrumb-item active">brand details</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Employees -->
+
+    <div class="m-5 justify-content-center align-items-center">
+        <div class="d-flex justify-content-between">
+
+            <h3>Emdad Home Employees</h3>
+
+        </div>
+        <div class="emp-cards pt-5 row row-cols-1 row-cols-3 gap-3 justify-content-center">
+            {% for emp in employees %}
+            <div class="card border-0 shadow-lg" style="width: 18rem;">
+                <img src="{{emp.avatar.url}}" class="card-img-top h-100 w-100" alt="{{emp.user.first_name}}">
+                <div class="card-body">
+                    <h5 class="card-title">{{emp.user.first_name}} {{emp.user.last_name}}</h5>
+                    {% if request.user.is_staff or request.user.is_superuser %}
+                    <p class="card-text">ID: {{emp.id_num}}</p>
+                    <p class="card-text">Leave Days: {{emp.vacationDays}}</p>
+                    {% endif %}
+                    <p class="card-text">{{emp.about}}</p>
+                    <a href="{% url 'employee:employee_profile' emp.user.username %}" class="btn btn-primary">View Profile</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}

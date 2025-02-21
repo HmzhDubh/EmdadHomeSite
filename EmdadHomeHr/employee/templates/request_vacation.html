@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+
+{% block title %} Vacation Request {% endblock %}
+
+{% block main %}
+<main>
+    <div class="d-flex container shadow rounded p-3 mt-5 bg-dark text-light justify-content-center">
+        <form class="form d-flex flex-column gap-2 p-4 w-50 " action="{% url 'employee:request_vacation' %}" method="post">
+            <h1 class="text-center m-5">Vacation Request</h1>
+            {% csrf_token %}
+
+            <div>
+                <label for="start_date" class="form-label h2">start Date</label>
+                <input class="form-control" id="start_date" name="start_date" type="date" required>
+            </div>
+
+            <div>
+                <label for="end_date" class="form-label h2">End Date</label>
+                <input class="form-control" id="end_date" name="end_date" type="date" required>
+            </div>
+
+            <div>
+                <label for="reason" class="form-label h2">Reason</label>
+                <input class="form-control" id="reason" name="reason" type="text" required>
+            </div>
+
+            <div>
+                <label for="comment" class="form-label h2">Comment</label>
+                <input class="form-control" id="comment" name="comment" type="text">
+            </div>
+
+            <input class="btn btn-primary rounded mt-3" type="submit" value="Send Request">
+        </form>
+    </div>
+</main>
+{% endblock %}

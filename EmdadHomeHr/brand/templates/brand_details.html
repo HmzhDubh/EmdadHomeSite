@@ -1,0 +1,73 @@
+
+{% extends 'index.html' %}
+{% load static %}
+{% block title %} Brand Details {% endblock %}
+
+{% block main %}
+<main>
+    <div class="breadcrumb ms-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="text-decoration-none" href="{% url 'HrApp:home_view' %}">Home</a></li>
+                <li class="breadcrumb-item">brands</li>
+                <li class="breadcrumb-item active">brand details</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="container  mt-5 brandCard">
+        <div class="card border-0 shadow-lg text-bg-dark">
+            <img src="{{brand.logo.url}}" class="card-img" alt="...">
+            <div class="card-img-overlay text-dark d-flex justify-content-between">
+                <div>
+                    <h1 class="card-title">{{brand.name}}</h1>
+                    <h5 class="card-text">{{brand.about}}</h5>
+                </div>
+                {% if request.user.is_staff or request.user.is_superuser%}
+                <div>
+                    <a href="{% url 'brand:update_brand' brand.id %} " class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
+                    <a href="{% url 'brand:delete_brand' brand.id %}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="m-5 justify-content-center align-items-center">
+        <h3>Highest Sales Employees (Admin only)</h3>
+        <div class="emp-cards d-flex gap-5 pt-5 ">
+            <div class="card" style="width: 15rem;">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="{% url 'employee:employee_profile' 1 %}" class="btn btn-primary">Go to profile</a>
+                </div>
+            </div>
+            <div class="card" style="width: 15rem;">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+            <div class="card" style="width: 15rem;">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+            <div class="card" style="width: 15rem;">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,318 @@
+{% extends 'index.html' %}
+{% block title %} {{emp.user.first_name}} {{emp.user.last_name}} Profile {% endblock %}
+
+{% block main %}
+<main class="my-5 mt-5 pt-5">
+    <div class="container pb-3 mb-3">
+        <nav class="ms-2" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'HrApp:home_view' %}" class="text-primary">Home</a></li>
+                <li class="breadcrumb-item"><a href="#" class="text-primary">Employee</a></li>
+                <li class="breadcrumb-item active">Profile</li>
+            </ol>
+        </nav>
+
+        <div class="row g-4 mt-4">
+            <div class="row">
+                <!-- Profile Section -->
+                <div class="col-md-4 col-lg-4">
+                    <div class="card border-0 shadow-lg rounded-4 animate__animated animate__fadeInLeft">
+                        <div class="card-header bg-secondary text-white text-center">
+                            <h4 class="mb-0">Profile</h4>
+                        </div>
+                        <div class="card-body text-center p-4">
+                            <!-- Logo -->
+                            <div class="mb-4">
+                                <img src="{{ emp.avatar.url }}" alt="{{emp.user.first_name}}"
+                                     class="img-fluid rounded-circle shadow-lg"
+                                     style="max-width: 150px; height: 150px; object-fit: cover;">
+                            </div>
+
+                            <!-- Employee Details -->
+                            <h5 class="card-title">@{{ emp.user.first_name }} {{emp.user.last_name}}</h5>
+
+                            <p class="text-muted">{{ emp.about }}</p>
+
+                            <p class="text-muted"><strong>Joined At:</strong> {{ emp.created_at }}</p>
+
+                            <!-- Social Links -->
+                            {% if request.user == emp.user or request.user.is_staff or request.user.is_superuser %}
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <i class="bi bi-envelope me-2"></i>
+                                    <span>Email:</span>
+                                    <a href="{{ emp.user.email }}" class="text-decoration-none">{{ emp.user.email }}</a>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <i class="bi bi-phone me-2"></i>
+                                    <span>Phone Number:</span>
+                                    <p class="text-decoration-none">{{ emp.phone_num }}</p>
+                                </li>
+
+                            </ul>
+                            {% endif %}
+
+                            <!-- Edit Button -->
+                            {% if request.user == emp.user or request.user.is_staff or request.user.is_superuser %}
+                            <div class="mt-3 text-end">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="bi bi-pencil-square"></i></button>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-8">
+                    <div class="card shadow-lg animate__animated animate__fadeInRight">
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Employee Name</strong></div>
+                                <div class="col-sm-8">{{ emp.user.first_name }} {{ emp.user.last_name }}</div>
+                            </div>
+                            {% if request.user == emp.user or request.user.is_staff or request.user.is_superuser %}
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Bio</strong></div>
+                                <div class="col-sm-8">{{ emp.about }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Email</strong></div>
+                                <div class="col-sm-8">{{ emp.user.email }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>ID</strong></div>
+                                <div class="col-sm-8">{{ emp.id_num }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Nationality</strong></div>
+                                <div class="col-sm-8">{{ emp.nationality }}</div>
+                            </div>
+                            {% endif %}
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Gender</strong></div>
+                                <div class="col-sm-8">{{ emp.gender }}</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4"><strong>Vacation Days</strong></div>
+                                <div class="col-sm-8">{{ emp.vacationDays }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Requests Section -->
+                    {% if request.user == emp.user or request.user.is_staff or request.user.is_superuser %}
+                    <div class="card shadow-lg rounded-4 my-4 animate__animated animate__fadeInUp">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h4 class="d-flex align-items-center gap-2 mb-3">
+                                    <i class="bi bi-pencil"></i>Vacation Request {% if emp_reqs %} [{{emp_reqs.count}}]{% endif %}
+                                </h4>
+                                <div class="d-flex flex-row justify-content-between">
+
+                                    <div class="dropdown">
+                                        <button data-bs-toggle="dropdown" class="dropdown-toggle btn">
+                                            <span class="bi bi-plus-circle-fill" style="font-size: 1.6rem;"></span>
+                                        </button>
+                                        <ul class="dropdown-menu arrow-hidden">
+
+                                            <li>
+                                                <a class="dropdown-item" href="{% url 'employee:request_vacation' %}">New Request</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container p-5">
+                                {% if emp_reqs %}
+
+                                {% for emp_req in emp_reqs %}
+                                <div class="card text-center mt-5   ">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <ul class="nav nav-tabs card-header-tabs">
+                                            <li class="nav-item">
+                                                <a class="nav-link {% if emp_req.status == 'approved' %} disabled text-success{% elif emp_req.status == 'declined' %} disabled active {% endif %}" {% if emp_req.status == 'approved' %}aria-current="true" {% endif %} href="{% url 'employee:approve_request' emp_req.id %}">Approve</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link {% if emp_req.status == 'declined' %} disabled text-danger {% elif emp_req.status == 'approved' %} disabled active {% endif %}" {% if emp_req.status == 'declined' %}aria-current="true" {% endif %} href="{% url 'employee:decline_request' emp_req.id %}">Decline</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{% url 'employee:delete_request' emp_req.id %}" class="nav-link"><i class="bi bi-trash text-danger"></i></a>
+                                            </li>
+                                        </ul>
+                                        <h5>Vacation Request</h5>
+                                    </div>
+
+                                    <div class="card-body align-items-center">
+                                        <h6 class="text-start ">{% if emp_req.status == 'approved' %}<i class="bi bi-check2-circle text-success"></i>{% elif emp_req.status == 'declined' %}<i class="bi bi-x-circle-fill text-danger"></i>{% else %}<i class="bi bi-clock-history text-warning"></i>{% endif %} {{emp_req.status}}</h6>
+                                        <h5 class="card-title">Reason: {{emp_req.reason}}</h5>
+                                        <div class="d-flex gap-1 justify-content-center">
+                                            <p class="card-text">From: {{emp_req.start_date}}</p>
+                                            <p class="card-text"> To: {{emp_req.end_date}}</p>
+                                        </div>
+                                        <p class="card-text">{{emp_req.comment}}</p>
+
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% else %}
+                                <p class="alert alert-danger shadow-sm text-center">No Requests.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Messages Section -->
+                    {% if request.user == emp.user or request.user.is_staff or request.user.is_superuser %}
+                    <div class="card shadow-lg rounded-4 my-4 animate__animated animate__fadeInUp">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h4 class="d-flex align-items-center gap-2 mb-3">
+                                    <i class="bi bi-envelope"></i>Messages {% if msgs %} [{{msgs.count}}]{% endif %}
+                                </h4>
+                                <div class="d-flex flex-row justify-content-between">
+
+                                    <div class="dropdown">
+                                        <button data-bs-toggle="dropdown" class="dropdown-toggle btn">
+                                            <span class="bi bi-plus-circle-fill" style="font-size: 1.6rem;"></span>
+                                        </button>
+                                        <ul class="dropdown-menu arrow-hidden">
+
+                                            <li>
+                                                <a class="dropdown-item" href="{% url 'HrApp:home_view' %}">New Message</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container p-5">
+                                {% if msgs %}
+
+                                {% for msg in msgs %}
+                                <div class="card text-center mt-5   ">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <ul class="nav nav-tabs card-header-tabs">
+                                            <li class="nav-item">
+                                                <a class="nav-link {% if msg.is_viewed == True %} disabled text-success{% else %} active {% endif %}" {% if  msg.is_viewed == False %} aria-current="true" {% endif %} href="{% url 'employee:markRead' msg.id %}">Mark As Read</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link {% if msg.is_viewed == False %} disabled text-danger {% else %} active {% endif %}" {% if msg.is_viewed == True %} aria-current="true" {% endif %} href="{% url 'employee:unread' msg.id %}">Unread</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{% url 'employee:delete_message' msg.id %}" class="nav-link"><i class="bi bi-trash text-danger"></i></a>
+                                            </li>
+                                        </ul>
+                                        <h5>Message</h5>
+                                    </div>
+
+                                    <div class="card-body align-items-center">
+                                        <h6 class="text-end ">
+                                            {% if msg.is_viewed == True %}
+                                            <i class="bi bi-check2-circle text-success"></i>
+                                            <small>Viewed</small>
+                                            {% else %}
+                                            <i class="bi bi-clock-history text-warning"></i>
+                                            <small>New Message</small>
+                                            {% endif %}
+
+                                        </h6>
+                                        <div class="text-start mt-4 mb-2">
+                                            <h5 class="card-title">Subject: {{msg.subject}}</h5>
+
+                                            <h6 class="card-text">Message: {{msg.content}}</h6>
+                                            <small class="card-text text-start">Sent At: {{msg.sent_at}}</small>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% else %}
+                                <p class="alert alert-danger shadow-sm text-center">No Messages.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+
+            <!-- Modal for Editing Profile -->
+            <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form d-flex flex-column gap-3 rounded" action="{% url 'employee:update_employee' emp.user.username %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+
+
+                                <div>
+                                    <label class="form-label " for="first_name">First Name <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="text" id="first_name" name="first_name" value="{{emp.user.first_name}}" required>
+                                </div>
+
+                                <div>
+                                    <label class="form-label " for="last_name">Last Name <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="text" id="last_name" name="last_name" value="{{emp.user.last_name}}" required>
+                                </div>
+
+                                <div>
+                                    <label for="bio" class="form-label ">Bio</label>
+                                    <input class="form-control" id="bio" name="about" type="text">
+                                </div>
+
+                                <div>
+                                    <label class="form-label " for="id_num">ID Number <span class="text-danger">*</span></label>
+                                    <input class="form-control" type="text" id="id_num" name="id_num" maxlength="10" minlength="10" value="{{emp.id_num}}" required>
+                                </div>
+                                <div>
+                                    <label class="form-label " for="phone_num">Phone Num</label>
+                                    <input class="form-control" type="text" id="phone_num" name="phone_num" maxlength="10" minlength="10" value="{{emp.phone_num}}" required>
+                                </div>
+
+                                <div>
+                                    <label for="nationality" class="form-label ">Nationality</label>
+                                    <select class="form-select" id="nationality" name="nationality">
+                                        <option value="">-- select one --</option>
+                                        {% for nationality in nationalities %}
+                                        <option value="{{ nationality }}"
+                                                {% if emp.nationality == nationality %}selected{% endif %}>
+                                            {{ nationality|title }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <!-- Male / Female -->
+                                <div class="d-flex align-items-center">
+                                    <label class="form-label me-1"> Gender <span class="text-danger">*</span></label>
+                                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+
+                                        <input type="radio" class="btn-check" name="gender" value="male" id="male" autocomplete="off"
+                                               {% if emp.gender == 'male' %} checked {% endif %}>
+                                        <label class="btn btn-outline-primary" for="male">Male</label>
+
+                                        <input type="radio" class="btn-check" name="gender" value="female" id="female" autocomplete="off"
+                                               {% if emp.gender == 'female' %} checked {% endif %}>
+                                        <label class="btn btn-outline-danger" for="female">Female</label>
+
+                                    </div>
+                                </div>
+
+
+
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,118 @@
+
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}Home Page{% endblock %}
+
+{% block main %}
+    <main>
+        <div class="m-0 p-0">
+            <img class='img-thumbnail border-0' src="{% static 'images/emdadHomeMainBg.webp' %}">
+        </div>
+
+        <!-- Employees -->
+
+        <div class="m-5 justify-content-center align-items-center">
+            <div class="d-flex justify-content-between">
+
+                <h3>Highest Sales Employees (Admin only)</h3>
+                <a href="{% url 'employee:all_employees' %}" class="text-decoration-none">View More -></a>
+            </div>
+            <div class="row row-cols-1 row-cols-4 justify-content-center gap-5 pt-5 ">
+                {% for emp in employees %}
+                <div class="card" style="width: 19rem;">
+                    <img src="{{emp.avatar.url}}" class="card-img-top" alt="{{emp.user.first_name}}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{emp.user.first_name}} {{emp.user.last_name}}</h5>
+                        <p class="card-text">{{emp.id_num}}</p>
+                        <p class="card-text">{{emp.nationality}}</p>
+                        <p class="card-text">{{emp.gender}}</p>
+                        <p class="card-text">{{emp.about}}</p>
+                        <p class="card-text">{{emp.vacationDays}}</p>
+                        <a href="{% url 'employee:employee_profile' emp.user.username %}" class="btn btn-primary">View Profile</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Brands -->
+
+        <div class="m-5 justify-content-center align-items-center">
+            <div class="d-flex justify-content-between">
+
+                <h3>Highest Sales Brands (Admin only)</h3>
+                <a class="text-decoration-none" href="{% url 'brand:all_brands' %}">View More -></a>
+            </div>
+            <div class="row row-cols-1 row-cols-4 justify-content-center gap-5 pt-5 ">
+                {% for brand in brands %}
+                <div class="card" style="width: 19rem;">
+                    <img src="{{brand.logo.url}}" class="card-img-top" alt="{{brand.name}}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{brand.name}}</h5>
+                        <p class="card-text">{{brand.about}}</p>
+                        <a href="{% url 'brand:brand_details' brand.id %}" class="btn btn-primary">Brand Details</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% if request.user.is_authenticated %}
+            <div id="contact" class="container-fluid mt-5 mb-5 shadow rounded p-5">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="sectioner-header text-center">
+                            <h1 class="">Contact us</h1>
+
+                            <p>Feel Free To Ask Questions, Suggest Improvements, Report Problems and Errors </p>
+                        </div>
+                        <div class="mt-2">
+                            <div class="row align-items-center">
+                                <div class="col-sm-12 col-md-12 col-lg-6  p-5">
+                                    <form id="contact_form" action="{% url 'employee:send_message' %}" method="post">
+                                        {% csrf_token %}
+                                        <h4>Send A Message</h4>
+                                        <input type="text" id="subject" class="form-control mb-3" name="subject" placeholder="Subject">
+                                        <textarea class="form-control mb-3" placeholder="Message" name="content"></textarea>
+                                        <button class="btn btn-primary w-100" type="submit">submit</button>
+                                    </form>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-6 ">
+                                    <div class="contact-info white">
+                                        <div class="d-flex">
+                                            <i class="bi bi-geo-alt-fill"></i>
+                                            <div class="media-body">
+                                                <p class="text-uppercase">Address</p>
+                                                <p class="text-uppercase">Riyadh, Qurtoba</p>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <i class="bi bi-phone"></i>
+                                            <div class="media-body">
+                                                <p class="text-uppercase">Phone</p>
+                                                <p class="text-uppercase"><a class="" href="tel:+15173977100">+966 544581821</a> </p>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex gap-1">
+                                            <i class="bi bi-envelope"></i>
+                                            <div class="">
+                                                <p class="text-uppercase"> email</p>
+                                                <p class="text-uppercase"><a class="" href="mailto:abcdefg@gmail.com">hamza.helal.d@gmail.com</a> </p>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <i class="bi bi-clock"></i>
+                                            <div class="">
+                                                <p class="text-uppercase">Working Hours</p>
+                                                <p class="text-uppercase">Sat-Thu (9.00 AM to 2.00 PM) - (5.00 PM to 10.00 PM)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+{% endblock %}
