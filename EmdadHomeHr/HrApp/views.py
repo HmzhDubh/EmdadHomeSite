@@ -14,7 +14,7 @@ def home_view(request: HttpRequest):
 
     if not User.objects.filter(username='admin').exists():
         User.objects.create_superuser('admin', 'admin@admin.com', 'admin')
-    print("Superuser created successfully.")
+    
 
     return render(request, 'home.html', context={
         'brands': brands,
