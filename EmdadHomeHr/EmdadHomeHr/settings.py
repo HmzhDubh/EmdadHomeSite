@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-@xh6282uzc*$t4-w$5_&h4um^n3j@^^hs8bgv#tjj!n51v_z%g
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
+# CSRF_TRUSTED_ORIGINS = ["https://emdadhomehr.up.railway.app", "http://127.0.0.1"]
 
 # Application definition
 
@@ -88,7 +88,6 @@ DATABASES = {
         'HOST': os.environ["PGHOST"],
         'PORT': os.environ["PGPORT"],
     }
-
 } if not DEBUG else {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -132,8 +131,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
