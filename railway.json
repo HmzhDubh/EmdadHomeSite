@@ -4,7 +4,7 @@
       "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand" : "cd EmdadHomeHr python manage.py migrate && python manage.py collectstatic --noinput && gunicorn EmdadHomeHr.wsgi"
+    "startCommand" : "cd emdadhomehr python manage.py migrate && python manage.py collectstatic --noinput && gunicorn emdadhomehr.wsgi"
   }
 
 }
